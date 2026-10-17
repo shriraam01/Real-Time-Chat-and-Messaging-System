@@ -1,0 +1,5 @@
+.vscode/
+.idea/
+*.iml
+target/
+chat-backend/src/main/resources/application.properties

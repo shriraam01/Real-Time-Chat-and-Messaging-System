@@ -1,5 +1,6 @@
 package com.chatapp.service;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.chatapp.dto.RegisterRequest;
 import com.chatapp.dto.UserResponse;
 import com.chatapp.entity.User;
@@ -35,5 +36,10 @@ public class UserService {
         User saved = userRepository.save(user);
 
         return new UserResponse(saved.getId(), saved.getUsername(), saved.getEmail(), saved.getCreatedAt());
+    }
+    public UserResponse getByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return new UserResponse(user.getId(), user.getUsername(), user.getEmail(), user.getCreatedAt());
     }
 }

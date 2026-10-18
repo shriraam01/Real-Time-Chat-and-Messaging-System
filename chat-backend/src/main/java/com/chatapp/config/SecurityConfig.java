@@ -39,7 +39,9 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll()
+                // /ws is open at the HTTP level because browsers cannot send an Authorization
+                // header on a WebSocket handshake; the JWT is checked on the STOMP CONNECT frame instead
+                .requestMatchers("/api/auth/**", "/ws/**", "/chat-test.html").permitAll()
                 .anyRequest().authenticated()
             )
             .exceptionHandling(ex -> ex.authenticationEntryPoint((req, res, e) -> {

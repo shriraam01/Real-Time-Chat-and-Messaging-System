@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 /**
  * Checks every incoming STOMP frame.
  * - CONNECT: validates the JWT and attaches the user to the WebSocket session
- * - SEND / SUBSCRIBE: only allowed for an authenticated session
- * - SUBSCRIBE: only personal queues under /user/queue/ are allowed
+ * - SEND: only for authenticated sessions, and only to /app/... destinations
+ * - SUBSCRIBE: only for authenticated sessions, and only to personal queues under /user/queue/
  */
 @Component
 public class StompAuthChannelInterceptor implements ChannelInterceptor {
@@ -61,6 +61,10 @@ public class StompAuthChannelInterceptor implements ChannelInterceptor {
         } else if (StompCommand.SEND.equals(command)) {
             if (accessor.getUser() == null) {
                 throw new MessagingException("Not authenticated");
+            }
+            String destination = accessor.getDestination();
+            if (destination == null || !destination.startsWith("/app/")) {
+                throw new MessagingException("Sending to this destination is not allowed");
             }
 
         } else if (StompCommand.SUBSCRIBE.equals(command)) {

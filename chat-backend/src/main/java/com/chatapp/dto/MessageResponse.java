@@ -1,7 +1,6 @@
 package com.chatapp.dto;
 
 import com.chatapp.entity.Message;
-import com.chatapp.entity.MessageStatus;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +10,6 @@ public record MessageResponse(
         Long senderId,
         String senderUsername,
         String content,
-        MessageStatus status,
         LocalDateTime createdAt
 ) {
     public static MessageResponse from(Message m) {
@@ -21,7 +19,6 @@ public record MessageResponse(
                 m.getSender().getId(),
                 m.getSender().getUsername(),
                 m.getContent(),
-                m.getStatus(),
                 m.getCreatedAt());
     }
 }

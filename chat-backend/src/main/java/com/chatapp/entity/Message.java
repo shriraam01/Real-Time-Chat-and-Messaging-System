@@ -23,10 +23,6 @@ public class Message {
     @Column(nullable = false, length = 2000)
     private String content;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private MessageStatus status;
-
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -44,7 +40,5 @@ public class Message {
     public void setSender(User sender) { this.sender = sender; }
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
-    public MessageStatus getStatus() { return status; }
-    public void setStatus(MessageStatus status) { this.status = status; }
     public LocalDateTime getCreatedAt() { return createdAt; }
 }

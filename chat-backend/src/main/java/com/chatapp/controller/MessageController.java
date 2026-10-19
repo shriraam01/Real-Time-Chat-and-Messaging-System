@@ -2,11 +2,7 @@ package com.chatapp.controller;
 
 import com.chatapp.dto.MessageResponse;
 import com.chatapp.dto.PageResponse;
-import com.chatapp.dto.SendMessageRequest;
 import com.chatapp.service.MessageService;
-import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -21,14 +17,7 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    @PostMapping
-    public ResponseEntity<MessageResponse> send(@PathVariable("conversationId") Long conversationId,
-                                                @Valid @RequestBody SendMessageRequest request,
-                                                @AuthenticationPrincipal UserDetails principal) {
-        MessageResponse response = messageService.send(conversationId, principal.getUsername(), request.content());
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
+    // sending goes through the WebSocket (see ChatController); REST is only used to load history
     @GetMapping
     public PageResponse<MessageResponse> history(@PathVariable("conversationId") Long conversationId,
                                                  @RequestParam(name = "page", defaultValue = "0") int page,

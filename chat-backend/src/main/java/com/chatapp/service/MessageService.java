@@ -4,7 +4,6 @@ import com.chatapp.dto.MessageResponse;
 import com.chatapp.dto.PageResponse;
 import com.chatapp.entity.Conversation;
 import com.chatapp.entity.Message;
-import com.chatapp.entity.MessageStatus;
 import com.chatapp.entity.User;
 import com.chatapp.exception.ForbiddenException;
 import com.chatapp.exception.ResourceNotFoundException;
@@ -35,7 +34,7 @@ public class MessageService {
         this.userRepository = userRepository;
     }
 
-    // Step 4 will call this same method from the WebSocket handler
+    /** Saves a message. Called by the WebSocket handler; delivery to the other members happens there. */
     @Transactional
     public MessageResponse send(Long conversationId, String senderUsername, String content) {
         User sender = findUser(senderUsername);
@@ -47,11 +46,11 @@ public class MessageService {
         message.setConversation(conversation);
         message.setSender(sender);
         message.setContent(content.trim());
-        message.setStatus(MessageStatus.SENT);
 
         return MessageResponse.from(messageRepository.save(message));
     }
 
+    /** One page of history, newest message first. */
     @Transactional(readOnly = true)
     public PageResponse<MessageResponse> history(Long conversationId, String username, int page, int size) {
         User user = findUser(username);

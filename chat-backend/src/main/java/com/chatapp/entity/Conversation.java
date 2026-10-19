@@ -16,7 +16,12 @@ public class Conversation {
     private ConversationType type;
 
     @Column(length = 100)
-    private String name;   // only used for groups later
+    private String name;   // only used for groups
+
+    // group admin; always null for one-to-one chats
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by")
+    private User createdBy;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -33,5 +38,7 @@ public class Conversation {
     public void setType(ConversationType type) { this.type = type; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+    public User getCreatedBy() { return createdBy; }
+    public void setCreatedBy(User createdBy) { this.createdBy = createdBy; }
     public LocalDateTime getCreatedAt() { return createdAt; }
 }

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Real-Time Chat</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Login / register -->
+<div id="auth-screen" class="auth-screen">
+  <div class="auth-card">
+    <h1>Real-Time Chat</h1>
+    <p class="auth-sub">Spring Boot &middot; WebSocket &middot; MySQL</p>
+
+    <div class="tabs">
+      <button id="tab-login" class="tab active" type="button">Log in</button>
+      <button id="tab-register" class="tab" type="button">Register</button>
+    </div>
+
+    <form id="login-form" autocomplete="on">
+      <input id="login-username" type="text" placeholder="Username" autocomplete="username" required>
+      <input id="login-password" type="password" placeholder="Password" autocomplete="current-password" required>
+      <button type="submit" class="primary">Log in</button>
+    </form>
+
+    <form id="register-form" autocomplete="on" hidden>
+      <input id="register-username" type="text" placeholder="Username (letters, digits, . _ -)" autocomplete="username" required>
+      <input id="register-email" type="email" placeholder="Email" autocomplete="email" required>
+      <input id="register-password" type="password" placeholder="Password (min 6 characters)" autocomplete="new-password" required>
+      <button type="submit" class="primary">Create account</button>
+    </form>
+
+    <p id="auth-error" class="error" role="alert"></p>
+  </div>
+</div>
+
+<!-- Main app -->
+<div id="app-screen" class="app" hidden>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="me">
+        <span id="me-dot" class="dot offline" title="Connection status"></span>
+        <span id="me-name" class="me-name"></span>
+      </div>
+      <div class="header-actions">
+        <button id="new-chat-btn" type="button" class="small">+ Chat</button>
+        <button id="new-group-btn" type="button" class="small">+ Group</button>
+        <button id="logout-btn" type="button" class="small ghost">Log out</button>
+      </div>
+    </div>
+    <div id="conversation-list" class="conversation-list"></div>
+  </aside>
+
+  <main class="chat">
+    <div id="empty-state" class="empty-state">
+      <h2>Welcome</h2>
+      <p>Pick a conversation on the left, or start a new chat or group.</p>
+    </div>
+
+    <section id="chat-view" class="chat-view" hidden>
+      <header class="chat-header">
+        <button id="back-btn" type="button" class="back" aria-label="Back to conversations">&larr;</button>
+        <div class="chat-title">
+          <div id="chat-title" class="title"></div>
+          <div id="chat-subtitle" class="subtitle"></div>
+        </div>
+        <button id="info-btn" type="button" class="small ghost" hidden>Group info</button>
+      </header>
+
+      <div id="messages" class="messages"></div>
+
+      <form id="composer" class="composer" autocomplete="off">
+        <input id="message-input" type="text" placeholder="Type a message" maxlength="2000">
+        <button type="submit" class="primary">Send</button>
+      </form>
+    </section>
+  </main>
+</div>
+
+<div id="modal-root"></div>
+<div id="toast" class="toast" hidden></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

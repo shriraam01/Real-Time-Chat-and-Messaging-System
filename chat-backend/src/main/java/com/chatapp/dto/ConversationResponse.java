@@ -9,7 +9,9 @@ public record ConversationResponse(
         Long id,
         ConversationType type,
         String name,
-        List<String> members,
+        String createdBy,
+        List<MemberResponse> members,
         MessageResponse lastMessage,
+        long unreadCount,
         LocalDateTime createdAt
 ) {}

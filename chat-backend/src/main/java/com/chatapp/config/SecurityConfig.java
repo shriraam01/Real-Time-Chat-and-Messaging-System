@@ -39,9 +39,11 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+                // the web page itself and the login/register API are public
+                .requestMatchers("/", "/index.html", "/app.js", "/style.css", "/favicon.ico", "/api/auth/**").permitAll()
                 // /ws is open at the HTTP level because browsers cannot send an Authorization
                 // header on a WebSocket handshake; the JWT is checked on the STOMP CONNECT frame instead
-                .requestMatchers("/api/auth/**", "/ws/**", "/chat-test.html").permitAll()
+                .requestMatchers("/ws/**").permitAll()
                 .anyRequest().authenticated()
             )
             .exceptionHandling(ex -> ex.authenticationEntryPoint((req, res, e) -> {
